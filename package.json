@@ -1,0 +1,20 @@
+{
+	"name" : "ftrace",
+	"version" : "0.1.0",
+	"author" : "Bogdan Mustiata <bogdan.mustiata@gmail.com>",
+	"description" : "A simple library that traces function calls.",
+    "main" : "lib/trace",
+	"keywords" : [
+		"console",
+		"log",
+		"trace"
+	],
+	"license" : "MIT",
+    "repository" : {
+        "type" : "git",
+        "url": "https://github.com/bmustiata/ftrace.git"
+    },
+    "dependencies" : {
+        "once-many" : "0.1.x"
+    }
+}
