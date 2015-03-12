@@ -52,6 +52,16 @@ module.exports = function(grunt) {
                         dest: 'target/ftrace.js'
                     }
                 ]
+            },
+
+            mochaTest: {
+                test: {
+                    options: {
+                        reporter: 'spec',
+                        captureFile: 'target/tests_results.txt'
+                    },
+                    src: ['test/**/*.js']
+                }
             }
         },
 
@@ -70,10 +80,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-mkdir');
+    grunt.loadNpmTasks('grunt-mocha-test');
 
     // register our tasks:
     grunt.registerTask('build-dist', ['clean:dist', 'mkdir:dist', 'concat:dist']);
     grunt.registerTask('build-client', ['clean:client', 'mkdir:client', 'concat:client']);
+
+    grunt.registerTask('test', ['build-dist', 'mocha-test']);
 
     grunt.registerTask('default', ['build-dist', 'build-client']);
 };
