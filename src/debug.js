@@ -32,4 +32,3 @@ var stringValue = function(item) {
         .replace(/\n/g, "\\n") + '"';
 };
 
-exports.objectToString = objectToString;

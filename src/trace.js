@@ -1,6 +1,3 @@
-var onceMany = require("once-many").onceMany,
-    debug = require("./debug.js");
-
 var level = 0;
 
 // FIXME: made the level object specific, so multiple traces can run independently - threads?
@@ -26,7 +23,7 @@ var ftrace = {
             comma = onceMany("", ", ");
 
         for (var i = 0; i < args.length; i++) {
-            stringArgs += comma.next() + debug.objectToString(args[i]);
+            stringArgs += comma.next() + objectToString(args[i]);
         }
 
         console.log(this._padding(level++) + "=> " + name + "(" + stringArgs +  ") : " + location);
@@ -51,6 +48,3 @@ var ftrace = {
     }
 };
 
-exports.wrap = ftrace.wrap;
-exports.enter = ftrace.enter;
-exports.leave = ftrace.leave;
