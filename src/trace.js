@@ -43,7 +43,7 @@ function parseStackItems(stackString) {
  * @return {SingleStackItem}
  */
 function parseSingleStackItem(stackItem) {
-    var parsedItem = /^\s*at\s+((.*\.)?(.*))\((.*\:\d+:\d+)\)/.exec(stackItem)
+    var parsedItem = /^\s*at\s+((.*\.)?(.*))\s*\((.*\:\d+:\d+)\)/.exec(stackItem)
 
     if (parsedItem) {
         return new SingleStackItem( parsedItem[3], parsedItem[4] );
@@ -77,12 +77,12 @@ var ftrace = {
 
     /**
      * Wraps the function call, and instead of tracing everything it uses
-     * the stack trace to solve calls.
+     * the stack trace to solve previous calls.
      */
     ewrap : function(name, location, func) {
         return function CiplogicFTraceWrapper() {
             var stackItems,
-                enteredFunctionsCount = 0,
+                currentCallCount,
                 i;
 
             try {
@@ -90,19 +90,35 @@ var ftrace = {
                 try { throw new Error() } catch (e) { stackString = e.stack; } // fill the stack string
 
                 stackItems = parseStackItems(stackString);
-                enteredFunctionsCount = stackItems.length - runningTraces[ runningTraces.length - 1 ].length;
+                currentCallCount = runningTraces[ runningTraces.length - 1 ].length;
 
-                for (i = runningTraces[ runningTraces.length - 1 ].length; i < stackItems.length; i++) {
+                for (i = currentCallCount; i < stackItems.length; i++) {
+                    if (/CiplogicFTraceWrapper/.test(stackItems[i].functionName)) {
+                        continue;
+                    }
+
                     ftrace.enter(stackItems[i].functionName, stackItems[i].location, []);
                 }
-                //ftrace.enter(name, location, arguments);
+
+                // since the wrapped method is not yet called, we need to report it called.
+                ftrace.enter(name, location, arguments);
+
+                runningTraces.push( stackItems );
 
                 return func.apply(this, arguments);
             } finally {
-                //ftrace.leave(name);
-                for (i = stackItems.length - 1; i >= runningTraces[ runningTraces.length - 1 ].length; i--) {
+                // report leaving the wrapped function
+                ftrace.leave(name);
+
+                for (i = stackItems.length - 1; i >= currentCallCount; i--) {
+                    if (/CiplogicFTraceWrapper/.test(stackItems[i].functionName)) {
+                        continue;
+                    }
+
                     ftrace.leave(stackItems[i].functionName);
                 }
+
+                runningTraces.pop();
             }
         }
     },
