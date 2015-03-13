@@ -1,5 +1,6 @@
 var level = 0,
-    runningTraces = [ [] ];
+    runningTraces = [ [] ],
+    outputConsole; // set the output console where the stack trace logs its stuff.
 
 // FIXME: made the level object specific, so multiple traces can run independently - threads?
 // FIXME: make the logging configurable somehow.
@@ -54,7 +55,7 @@ function parseSingleStackItem(stackItem) {
         return new SingleStackItem( '<anonymous>', parsedItem[1] );
     }
 
-    console.log("Unable to parse: `" + stackItem + "`");
+    outputConsole.log("Unable to parse: `" + stackItem + "`");
 
     return null;
 }
@@ -79,7 +80,7 @@ var ftrace = {
      * the stack trace to solve calls.
      */
     ewrap : function(name, location, func) {
-        return function() {
+        return function CiplogicFTraceWrapper() {
             var stackItems,
                 enteredFunctionsCount = 0,
                 i;
@@ -114,11 +115,19 @@ var ftrace = {
             stringArgs += comma.next() + objectToString(args[i]);
         }
 
-        console.log(this._padding(level++) + "=> " + name + "(" + stringArgs +  ") : " + location);
+        outputConsole.log(this._padding(level++) + "=> " + name + "(" + stringArgs +  ") : " + location);
     },
 
     leave : function(name) {
-        console.log(this._padding(--level) + "<= " + name);
+        outputConsole.log(this._padding(--level) + "<= " + name);
+    },
+
+    /**
+     * @param {object} outputConsole The output console for ftrace.
+     * @param {Function} outputConsole.log The log function that will be used.
+     */
+    setConsole : function(outputConsoleParam) {
+        outputConsole = outputConsoleParam;
     },
 
     /**
