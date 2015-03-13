@@ -48,7 +48,7 @@ function parseSingleStackItem(stackItem) {
         return new SingleStackItem( parsedItem[3], parsedItem[4] );
     }
 
-    parsedItem = /^\s*at\s+(.*:\d+\d+$)/.exec(stackItem);
+    parsedItem = /^\s*at\s+(.*\:\d+\:\d+$)/.exec(stackItem);
 
     if (parsedItem) {
         return new SingleStackItem( '<anonymous>', parsedItem[1] );
@@ -91,15 +91,15 @@ var ftrace = {
                 stackItems = parseStackItems(stackString);
                 enteredFunctionsCount = stackItems.length - runningTraces[ runningTraces.length - 1 ].length;
 
-                for (i = runningTraces[ runningTraces.length - 1 ].length; i < stackItems.length - 1; i++) {
+                for (i = runningTraces[ runningTraces.length - 1 ].length; i < stackItems.length; i++) {
                     ftrace.enter(stackItems[i].functionName, stackItems[i].location, []);
                 }
-                ftrace.enter(name, location, arguments);
+                //ftrace.enter(name, location, arguments);
 
                 return func.apply(this, arguments);
             } finally {
-                ftrace.leave(name);
-                for (i = stackItems.length - 2; i >= runningTraces[ runningTraces.length - 1 ].length; i--) {
+                //ftrace.leave(name);
+                for (i = stackItems.length - 1; i >= runningTraces[ runningTraces.length - 1 ].length; i--) {
                     ftrace.leave(stackItems[i].functionName);
                 }
             }
