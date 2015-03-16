@@ -1,6 +1,6 @@
 {
   "name": "ftrace",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "homepage": "https://github.com/bmustiata/ftrace",
   "authors": [
     "Bogdan Mustiata <bogdan.mustiata@gmail.com>"
@@ -20,6 +20,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "src",
+    "lib"
   ]
 }

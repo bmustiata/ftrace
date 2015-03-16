@@ -1,6 +1,6 @@
 {
 	"name" : "ftrace",
-	"version" : "0.2.1",
+	"version" : "0.2.2",
 	"author" : "Bogdan Mustiata <bogdan.mustiata@gmail.com>",
 	"description" : "A simple library that traces function calls.",
     "main" : "lib/trace",
