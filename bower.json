@@ -1,12 +1,12 @@
 {
   "name": "ftrace",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/bmustiata/ftrace",
   "authors": [
     "Bogdan Mustiata <bogdan.mustiata@gmail.com>"
   ],
   "description": "A simple library that traces function calls.",
-  "main": "target/ftrace.js",
+  "main": "client/ftrace.js",
   "moduleType": [
     "globals",
     "node"

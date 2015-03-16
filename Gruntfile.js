@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 
             client : {
                 options: {
-                    create: [ 'target/' ]
+                    create: [ 'client/' ]
                 }
             }
         },
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 
                             'src/client/wrap-after.js'
                         ],
-                        dest: 'target/ftrace.js'
+                        dest: 'client/ftrace.js'
                     }
                 ]
             },
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
                 "lib/"
             ],
             client : [
-                "target/"
+                "client/"
             ]
         }
     });
